@@ -1,0 +1,361 @@
+.signup-page {
+  width: 100%;
+  min-height: 70vh;
+  background: #ffffff;
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  color: #000000;
+}
+
+.signup-page *,
+.signup-page *::before,
+.signup-page *::after {
+  box-sizing: border-box;
+}
+
+/* =========================================
+   CONTAINER
+   ========================================= */
+
+.signup-container {
+  width: min(100% - 40px, 1200px);
+  min-height: 700px;
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 70px 0;
+}
+
+/* =========================================
+   CARD
+   ========================================= */
+
+.signup-card {
+  width: 100%;
+  max-width: 480px;
+
+  padding: 42px 40px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 24px;
+
+  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.06);
+}
+
+/* =========================================
+   HEADING
+   ========================================= */
+
+.signup-card h1 {
+  margin: 0;
+
+  font-size: 36px;
+  line-height: 1.1;
+
+  font-weight: 900;
+  letter-spacing: -1px;
+
+  text-align: center;
+}
+
+.signup-subtitle {
+  margin: 10px 0 30px;
+
+  color: #777777;
+
+  font-size: 15px;
+  line-height: 1.6;
+
+  text-align: center;
+}
+
+/* =========================================
+   ERROR / SUCCESS
+   ========================================= */
+
+.signup-error,
+.signup-success {
+  width: 100%;
+
+  margin-bottom: 20px;
+  padding: 12px 15px;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  text-align: center;
+}
+
+.signup-error {
+  background: #fff0f0;
+  color: #e00000;
+  border: 1px solid #ffd1d1;
+}
+
+.signup-success {
+  background: #effff3;
+  color: #16843b;
+  border: 1px solid #c9f0d5;
+}
+
+/* =========================================
+   FORM
+   ========================================= */
+
+.signup-card form {
+  width: 100%;
+}
+
+/* =========================================
+   FORM GROUP
+   ========================================= */
+
+.signup-card .form-group {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.signup-card .form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #111111;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* =========================================
+   INPUT
+   ========================================= */
+
+.signup-card .form-group input {
+  width: 100%;
+  height: 52px;
+
+  padding: 0 16px;
+
+  border: 1px solid #dddddd;
+  border-radius: 12px;
+
+  outline: none;
+
+  background: #f7f7f7;
+
+  color: #000000;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.signup-card .form-group input::placeholder {
+  color: #999999;
+}
+
+.signup-card .form-group input:focus {
+  border-color: #000000;
+  background: #ffffff;
+
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+}
+
+/* =========================================
+   SIGNUP BUTTON
+   ========================================= */
+
+.signup-button {
+  width: 100%;
+  height: 54px;
+
+  margin-top: 5px;
+
+  border: none;
+  border-radius: 28px;
+
+  background: #000000;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.signup-button:hover:not(:disabled) {
+  background: #222222;
+  transform: translateY(-1px);
+}
+
+.signup-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.signup-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   LOGIN LINK
+   ========================================= */
+
+.login-link {
+  margin: 24px 0 0;
+
+  color: #666666;
+
+  font-size: 14px;
+
+  text-align: center;
+}
+
+.login-link a {
+  color: #000000;
+
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 768px) {
+  .signup-container {
+    width: calc(100% - 32px);
+
+    min-height: auto;
+
+    padding: 55px 0;
+  }
+
+  .signup-card {
+    max-width: 450px;
+
+    padding: 36px 30px;
+
+    border-radius: 20px;
+  }
+
+  .signup-card h1 {
+    font-size: 32px;
+  }
+}
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 480px) {
+  .signup-container {
+    width: calc(100% - 24px);
+
+    padding: 35px 0 45px;
+  }
+
+  .signup-card {
+    padding: 30px 20px;
+
+    border-radius: 18px;
+
+    box-shadow: 0 5px 22px rgba(0, 0, 0, 0.05);
+  }
+
+  .signup-card h1 {
+    font-size: 28px;
+    letter-spacing: -0.7px;
+  }
+
+  .signup-subtitle {
+    margin-bottom: 25px;
+
+    font-size: 13px;
+  }
+
+  .signup-card .form-group {
+    margin-bottom: 17px;
+  }
+
+  .signup-card .form-group label {
+    font-size: 13px;
+  }
+
+  .signup-card .form-group input {
+    height: 50px;
+
+    padding: 0 14px;
+
+    font-size: 13px;
+
+    border-radius: 10px;
+  }
+
+  .signup-button {
+    height: 51px;
+
+    font-size: 14px;
+  }
+
+  .login-link {
+    font-size: 13px;
+  }
+}
+
+/* =========================================
+   VERY SMALL MOBILE
+   ========================================= */
+
+@media (max-width: 350px) {
+  .signup-container {
+    width: calc(100% - 18px);
+  }
+
+  .signup-card {
+    padding: 25px 16px;
+  }
+
+  .signup-card h1 {
+    font-size: 25px;
+  }
+
+  .signup-card .form-group input {
+    height: 47px;
+  }
+
+  .signup-button {
+    height: 48px;
+  }
+}

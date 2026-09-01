@@ -1,0 +1,478 @@
+.shop-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #ffffff;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color: #000000;
+  box-sizing: border-box;
+}
+
+.shop-page *,
+.shop-page *::before,
+.shop-page *::after {
+  box-sizing: border-box;
+}
+
+/* =========================================
+   CONTAINER
+   ========================================= */
+
+.shop-container {
+  width: min(1240px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 45px 0 80px;
+}
+
+/* =========================================
+   SHOP HEADER
+   ========================================= */
+
+.shop-header {
+  margin-bottom: 42px;
+  border-bottom: 1px solid #eeeeee;
+  padding-bottom: 28px;
+}
+
+.shop-header h1 {
+  margin: 0 0 12px;
+  font-size: 42px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+}
+
+.shop-header p {
+  margin: 0;
+  max-width: 600px;
+  color: #666666;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* =========================================
+   PRODUCTS GRID
+   ========================================= */
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 36px 20px;
+}
+
+/* =========================================
+   PRODUCT CARD
+   ========================================= */
+
+.product-card {
+  min-width: 0;
+  text-decoration: none;
+  color: #000000;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+}
+
+/* =========================================
+   PRODUCT IMAGE
+   ========================================= */
+
+.product-card-image {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #f2f2f2;
+  display: block;
+}
+
+.product-card-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.product-card:hover .product-card-image img {
+  transform: scale(1.04);
+}
+
+/* =========================================
+   DISCOUNT
+   ========================================= */
+
+/* .product-card-discount {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  padding: 7px 11px;
+
+  background: #ff3333;
+  color: #ffffff;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+  font-weight: 700;
+} */
+
+/* =========================================
+   PRODUCT INFO
+   ========================================= */
+
+.product-card-info {
+  padding-top: 15px;
+}
+
+.product-card-name {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #000000;
+  text-decoration: none;
+
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 700;
+
+  transition: opacity 0.2s ease;
+}
+
+.product-card-name:hover {
+  opacity: 0.65;
+}
+
+/* =========================================
+   RATING
+   ========================================= */
+
+.product-card-rating {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+
+.product-card-rating .stars {
+  color: #ffc633;
+  font-size: 17px;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.rating-number {
+  color: #555555;
+  font-size: 13px;
+}
+
+/* =========================================
+   PRICE
+   ========================================= */
+
+.product-card-price {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.current-price {
+  color: #000000;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.product-card-price .old-price {
+  color: #999999;
+  font-size: 18px;
+  font-weight: 600;
+  text-decoration: line-through;
+}
+
+.product-card-price .discount {
+  padding: 5px 9px;
+
+  border-radius: 20px;
+
+  background: #ffe5e5;
+  color: #ff3333;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* =========================================
+   ADD TO CART BUTTON
+   ========================================= */
+
+.product-card-button {
+  width: 100%;
+  margin-top: 14px;
+  padding: 12px 16px;
+
+  border: 1px solid #000000;
+  border-radius: 25px;
+
+  background: #ffffff;
+  color: #000000;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.product-card-button:hover {
+  background: #000000;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.product-card-button:active {
+  transform: scale(0.98);
+}
+
+/* =========================================
+   LOADING
+   ========================================= */
+
+.shop-loading {
+  min-height: 60vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px;
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 18px;
+  font-weight: 600;
+  color: #555555;
+  text-align: center;
+}
+
+/* =========================================
+   ERROR
+   ========================================= */
+
+.shop-error {
+  min-height: 60vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px;
+
+  color: #ff3333;
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 1100px) {
+  .shop-container {
+    width: min(100% - 40px, 1000px);
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px 18px;
+  }
+
+  .product-card-image {
+    height: 280px;
+  }
+}
+
+/* =========================================
+   SMALL TABLET
+   ========================================= */
+
+@media (max-width: 800px) {
+  .shop-container {
+    width: calc(100% - 32px);
+    padding: 35px 0 60px;
+  }
+
+  .shop-header {
+    margin-bottom: 32px;
+    padding-bottom: 22px;
+  }
+
+  .shop-header h1 {
+    font-size: 36px;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px 16px;
+  }
+
+  .product-card-image {
+    height: 280px;
+    border-radius: 15px;
+  }
+
+  .product-card-name {
+    font-size: 15px;
+  }
+
+  .current-price {
+    font-size: 19px;
+  }
+}
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 520px) {
+  .shop-container {
+    width: calc(100% - 24px);
+    padding: 28px 0 50px;
+  }
+
+  .shop-header {
+    margin-bottom: 25px;
+  }
+
+  .shop-header h1 {
+    font-size: 30px;
+    letter-spacing: -0.8px;
+  }
+
+  .shop-header p {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px 10px;
+  }
+
+  .product-card-image {
+    height: 210px;
+    border-radius: 12px;
+  }
+
+  .product-card-info {
+    padding-top: 10px;
+  }
+
+  .product-card-name {
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .product-card-rating {
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+
+  .product-card-rating .stars {
+    font-size: 13px;
+    letter-spacing: 0;
+  }
+
+  .rating-number {
+    font-size: 11px;
+  }
+
+  .current-price {
+    font-size: 16px;
+  }
+
+  .product-card-price .old-price {
+    font-size: 14px;
+  }
+
+  .product-card-price .discount {
+    padding: 4px 7px;
+    font-size: 9px;
+  }
+
+  .product-card-button {
+    margin-top: 10px;
+    padding: 9px 8px;
+    font-size: 12px;
+  }
+
+  .product-card-discount {
+    top: 8px;
+    right: 8px;
+    padding: 5px 8px;
+    font-size: 9px;
+  }
+}
+
+/* =========================================
+   VERY SMALL MOBILE
+   ========================================= */
+
+@media (max-width: 360px) {
+  .products-grid {
+    gap: 22px 8px;
+  }
+
+  .product-card-image {
+    height: 180px;
+  }
+
+  .product-card-name {
+    font-size: 12px;
+  }
+
+  .current-price {
+    font-size: 15px;
+  }
+
+  .product-card-button {
+    font-size: 11px;
+    padding: 8px 5px;
+  }
+}
