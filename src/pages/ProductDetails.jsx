@@ -22,7 +22,7 @@ const ProductDetails = () => {
         setError("");
 
         const response = await fetch(
-          `http://localhost:3000/api/products/${id}`
+          `https://e-commerce-backend-two-vert.vercel.app/api/products/${id}`
         );
 
         if (!response.ok) {

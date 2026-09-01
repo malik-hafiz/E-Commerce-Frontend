@@ -36,7 +36,7 @@ const Login = () => {
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:3000/auth/login",
+        "https://e-commerce-backend-two-vert.vercel.app/auth/login",
         {
           method: "POST",
           headers: {

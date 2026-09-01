@@ -82,7 +82,7 @@ const Checkout = () => {
       }));
 
       const response = await fetch(
-        "http://localhost:3000/orders",
+        "https://e-commerce-backend-two-vert.vercel.app/orders",
         {
           method: "POST",
 
