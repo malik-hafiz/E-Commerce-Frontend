@@ -61,7 +61,7 @@ const Signup = () => {
       setLoading(true);
 
       const response = await fetch(
-        "https://e-commerce-backend-two-vert.vercel.app/auth/signup",
+        "https://e-commerce-backend-delta-tawny.vercel.app/auth/signup",
         {
           method: "POST",
 

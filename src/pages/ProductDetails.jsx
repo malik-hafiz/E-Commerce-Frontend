@@ -23,7 +23,7 @@ const ProductDetails = () => {
         setError("");
 
         const response = await fetch(
-          `https://e-commerce-backend-two-vert.vercel.app/api/products/${id}`
+          `https://e-commerce-backend-delta-tawny.vercel.app/api/products/${id}`
         );
 
         if (!response.ok) {

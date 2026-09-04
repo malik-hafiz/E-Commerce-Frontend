@@ -94,7 +94,7 @@ const Checkout = () => {
       }));
 
       const response = await fetch(
-        "https://e-commerce-backend-two-vert.vercel.app/orders",
+        "https://e-commerce-backend-delta-tawny.vercel.app/orders",
         {
           method: "POST",
 

@@ -14,7 +14,7 @@ const NewArrivals = () => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          "https://e-commerce-backend-two-vert.vercel.app/api/products"
+          "https://e-commerce-backend-delta-tawny.vercel.app/api/products"
         );
 
         if (!response.ok) {

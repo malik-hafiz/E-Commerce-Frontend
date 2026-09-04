@@ -9,7 +9,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "./Home.css";
 
-const API_URL = "https://e-commerce-backend-two-vert.vercel.app/api/products";
+const API_URL = "https://e-commerce-backend-delta-tawny.vercel.app/api/products";
 
 const reviews = [
   {
