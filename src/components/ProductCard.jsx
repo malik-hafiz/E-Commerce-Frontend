@@ -113,13 +113,13 @@ const ProductCard = ({ product }) => {
 
         </div>
 
-        {/* Add to Cart */}
+        /* {/* Add to Cart */}
         <button
           className="product-card-button"
           onClick={addToCart}
         >
         
-        </button>
+        </button> */
 
       </div>
 
