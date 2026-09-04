@@ -499,7 +499,6 @@
   max-width: 1200px;
 
   margin: 20px auto 80px;
-
   padding: 70px 60px;
 
   border-radius: 25px;
@@ -508,89 +507,213 @@
 }
 
 .dress-style h2 {
-  margin: 0 0 42px;
+  margin: 0 0 40px;
 
   text-align: center;
 
   font-size: clamp(30px, 4vw, 44px);
+  line-height: 1;
+
   font-weight: 900;
-  letter-spacing: -1px;
+  letter-spacing: -1.5px;
 }
+
+
+/* ================= GRID ================= */
 
 .style-grid {
   display: grid;
 
-  grid-template-columns: 0.8fr 1.2fr;
+  grid-template-columns: 0.75fr 1.25fr;
   grid-template-rows: 230px 230px;
 
   gap: 18px;
 }
 
+
+/* ================= CARD ================= */
+
 .style-card {
   position: relative;
 
-  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
 
-  display: flex;
-  align-items: flex-start;
+  overflow: hidden;
 
   border-radius: 18px;
 
-  text-decoration: none;
+  background: #e5e5e5;
 
-  background-size: cover;
-  background-position: center;
+  cursor: pointer;
 
   transition: transform 0.25s ease;
 }
 
 .style-card:hover {
-  transform: scale(1.01);
+  transform: translateY(-3px);
 }
 
+
+/* ================= IMAGE ================= */
+
+.style-card img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+  object-position: center;
+
+  transition: transform 0.35s ease;
+}
+
+.style-card:hover img {
+  transform: scale(1.03);
+}
+
+
+/* ================= TITLE ================= */
+
 .style-card span {
-  padding: 25px 30px;
+  position: absolute;
+
+  top: 25px;
+  left: 30px;
+
+  z-index: 2;
 
   color: #000000;
 
   font-size: 27px;
+  line-height: 1.1;
+
   font-weight: 700;
 }
 
-.casual {
-  background:
-    linear-gradient(
-      100deg,
-      #e9e9e9 0%,
-      #d2d2d2 100%
-    );
+
+/* =====================================================
+   CARD POSITIONS
+   ===================================================== */
+
+/* Casual - Top Left */
+.style-card.casual {
+  grid-column: 1;
+  grid-row: 1;
 }
 
-.formal {
-  background:
-    linear-gradient(
-      100deg,
-      #dedede 0%,
-      #bdbdbd 100%
-    );
+/* Formal - Top Right */
+.style-card.formal {
+  grid-column: 2;
+  grid-row: 1;
 }
 
-.party {
-  background:
-    linear-gradient(
-      100deg,
-      #cfcfcf 0%,
-      #e5e5e5 100%
-    );
+/* Party - Bottom Left */
+.style-card.party {
+  grid-column: 1;
+  grid-row: 2;
 }
 
-.gym {
-  background:
-    linear-gradient(
-      100deg,
-      #dedede 0%,
-      #c8c8c8 100%
-    );
+/* Gym - Bottom Right */
+.style-card.gym {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media (max-width: 1000px) {
+
+  .dress-style {
+    padding: 55px 35px;
+  }
+
+  .style-grid {
+    grid-template-columns: 1fr 1fr;
+
+    grid-template-rows: 220px 220px;
+
+    gap: 15px;
+  }
+
+  .style-card span {
+    top: 20px;
+    left: 22px;
+
+    font-size: 24px;
+  }
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+  .dress-style {
+    width: calc(100% - 30px);
+
+    margin: 10px auto 60px;
+
+    padding: 45px 15px;
+
+    border-radius: 20px;
+  }
+
+  .dress-style h2 {
+    margin-bottom: 28px;
+
+    font-size: 29px;
+  }
+
+  .style-grid {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+  }
+
+  .style-card {
+    width: 100%;
+    height: 180px;
+
+    min-height: 180px;
+
+    border-radius: 15px;
+  }
+
+  .style-card span {
+    top: 20px;
+    left: 20px;
+
+    font-size: 23px;
+  }
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 400px) {
+
+  .style-card {
+    height: 160px;
+    min-height: 160px;
+  }
+
+  .style-card span {
+    top: 17px;
+    left: 17px;
+
+    font-size: 21px;
+  }
 }
 
 /* =====================================================

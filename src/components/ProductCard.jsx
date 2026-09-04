@@ -114,12 +114,12 @@ const ProductCard = ({ product }) => {
         </div>
 
         {/* Add to Cart */}
-        {/* <button
+        <button
           className="product-card-button"
           onClick={addToCart}
         >
-          Add to Cart
-        </button> */}
+        
+        </button>
 
       </div>
 

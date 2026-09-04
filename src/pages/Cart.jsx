@@ -4,6 +4,8 @@ import "./Cart.css";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { MdDelete } from "react-icons/md";
+import { FiTag, FiArrowRight } from "react-icons/fi";
+
 const Cart = () => {
   const [cart, setCart] = useState(() => {
     try {
@@ -14,15 +16,18 @@ const Cart = () => {
     }
   });
 
-  // Save cart to localStorage
+  const [promoCode, setPromoCode] = useState("");
+  const [discountApplied, setDiscountApplied] = useState(false);
+
+  // Save cart
   const saveCart = (updatedCart) => {
     setCart(updatedCart);
+
     localStorage.setItem(
       "cart",
       JSON.stringify(updatedCart)
     );
 
-    // Navbar/cart count ko update karne ke liye event
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
@@ -32,7 +37,8 @@ const Cart = () => {
 
     updatedCart[index] = {
       ...updatedCart[index],
-      quantity: Number(updatedCart[index].quantity) + 1,
+      quantity:
+        Number(updatedCart[index].quantity || 1) + 1,
     };
 
     saveCart(updatedCart);
@@ -43,7 +49,7 @@ const Cart = () => {
     const updatedCart = [...cart];
 
     const currentQuantity =
-      Number(updatedCart[index].quantity);
+      Number(updatedCart[index].quantity || 1);
 
     if (currentQuantity <= 1) {
       return;
@@ -57,7 +63,7 @@ const Cart = () => {
     saveCart(updatedCart);
   };
 
-  // Remove product
+  // Remove item
   const removeItem = (index) => {
     const updatedCart = cart.filter(
       (_, itemIndex) => itemIndex !== index
@@ -66,40 +72,60 @@ const Cart = () => {
     saveCart(updatedCart);
   };
 
-  // Clear complete cart
+  // Clear cart
   const clearCart = () => {
     saveCart([]);
   };
 
-  // Calculate subtotal
+  // Subtotal
   const subtotal = cart.reduce((total, item) => {
     return (
       total +
-      Number(item.price) *
-        Number(item.quantity)
+      Number(item.price || 0) *
+        Number(item.quantity || 1)
     );
   }, 0);
 
-  // Shipping
-  const shipping = cart.length > 0 ? 0 : 0;
+  // 20% discount
+  const discount = discountApplied
+    ? subtotal * 0.2
+    : 0;
+
+  // Delivery
+  const deliveryFee = cart.length > 0 ? 15 : 0;
 
   // Final total
-  const total = subtotal + shipping;
+  const total =
+    subtotal - discount + deliveryFee;
+
+  // Promo
+  const applyPromo = () => {
+    if (promoCode.trim().toUpperCase() === "SAVE20") {
+      setDiscountApplied(true);
+    } else {
+      setDiscountApplied(false);
+      alert("Invalid promo code");
+    }
+  };
 
   return (
     <main className="cart-page">
-<Navbar />
+
+      <Navbar />
+
       <div className="cart-container">
 
-        {/* Header */}
-        <div className="cart-header">
-          <div>
-            <p className="cart-breadcrumb">
-              Home / Cart
-            </p>
+        {/* Breadcrumb */}
+        <div className="cart-breadcrumb">
+          <Link to="/">Home</Link>
+          <span>/</span>
+          <span>Cart</span>
+        </div>
 
-            <h1>YOUR CART</h1>
-          </div>
+        {/* Heading */}
+        <div className="cart-header">
+
+          <h1>YOUR CART</h1>
 
           {cart.length > 0 && (
             <button
@@ -109,11 +135,15 @@ const Cart = () => {
               Clear Cart
             </button>
           )}
+
         </div>
 
         {cart.length === 0 ? (
 
-          /* Empty Cart */
+          /* =========================
+             EMPTY CART
+          ========================= */
+
           <div className="empty-cart">
 
             <div className="empty-cart-icon">
@@ -138,20 +168,26 @@ const Cart = () => {
 
         ) : (
 
-          /* Cart Content */
+          /* =========================
+             CART CONTENT
+          ========================= */
+
           <div className="cart-content">
 
-            {/* Cart Items */}
+            {/* =====================
+                LEFT SIDE
+            ===================== */}
+
             <div className="cart-items">
 
               {cart.map((item, index) => (
 
                 <div
                   className="cart-item"
-                  key={`${item.id}-${item.selectedSize || ""}-${item.selectedColor || ""}`}
+                  key={`${item.id}-${item.selectedSize || ""}-${item.selectedColor || ""}-${index}`}
                 >
 
-                  {/* Image */}
+                  {/* Product Image */}
                   <div className="cart-item-image">
 
                     <img
@@ -161,19 +197,21 @@ const Cart = () => {
 
                   </div>
 
-                  {/* Product Information */}
+                  {/* Product Info */}
                   <div className="cart-item-info">
 
-                    <h2>{item.name}</h2>
+                    <h2>
+                      {item.name}
+                    </h2>
 
                     {item.category && (
                       <p className="cart-category">
-                        {item.category}
+                        Category: {item.category}
                       </p>
                     )}
 
                     {item.selectedSize && (
-                      <p>
+                      <p className="cart-option">
                         Size:{" "}
                         <strong>
                           {item.selectedSize}
@@ -182,7 +220,7 @@ const Cart = () => {
                     )}
 
                     {item.selectedColor && (
-                      <p>
+                      <p className="cart-option">
                         Color:{" "}
                         <strong>
                           {item.selectedColor}
@@ -191,10 +229,23 @@ const Cart = () => {
                     )}
 
                     <p className="cart-item-price">
-                      ${item.price.toFixed(2)}
+                      $
+                      {Number(item.price || 0).toFixed(2)}
                     </p>
 
                   </div>
+
+                  {/* Delete */}
+                  <button
+                    type="button"
+                    className="remove-item-btn"
+                    onClick={() =>
+                      removeItem(index)
+                    }
+                    aria-label={`Remove ${item.name}`}
+                  >
+                    <MdDelete />
+                  </button>
 
                   {/* Quantity */}
                   <div className="cart-quantity">
@@ -209,7 +260,7 @@ const Cart = () => {
                     </button>
 
                     <span>
-                      {item.quantity}
+                      {Number(item.quantity || 1)}
                     </span>
 
                     <button
@@ -223,80 +274,112 @@ const Cart = () => {
 
                   </div>
 
-                  {/* Item Total */}
-                  <div className="cart-item-total">
-
-                    $
-                    {(
-                      Number(item.price) *
-                      Number(item.quantity)
-                    ).toFixed(2)}
-
-                  </div>
-
-                  {/* Remove */}
-                  <button
-                    type="button"
-                    className="remove-item-btn"
-                    onClick={() =>
-                      removeItem(index)
-                    }
-                    aria-label={`Remove ${item.name}`}
-                  >
-                  <MdDelete />
-                  </button>
-
                 </div>
 
               ))}
 
             </div>
 
-            {/* Summary */}
+            {/* =====================
+                RIGHT SIDE
+            ===================== */}
+
             <aside className="cart-summary">
 
               <h2>Order Summary</h2>
 
+              {/* Subtotal */}
               <div className="summary-row">
-                <span>Subtotal</span>
+
+                <span>
+                  Subtotal
+                </span>
 
                 <strong>
                   ${subtotal.toFixed(2)}
                 </strong>
+
               </div>
 
+              {/* Discount */}
               <div className="summary-row">
-                <span>Shipping</span>
+
+                <span>
+                  Discount (-20%)
+                </span>
+
+                <strong className="discount">
+                  -${discount.toFixed(2)}
+                </strong>
+
+              </div>
+
+              {/* Delivery */}
+              <div className="summary-row">
+
+                <span>
+                  Delivery Fee
+                </span>
 
                 <strong>
-                  {shipping === 0
-                    ? "Free"
-                    : `$${shipping.toFixed(2)}`}
+                  ${deliveryFee.toFixed(2)}
                 </strong>
+
               </div>
 
               <div className="summary-divider" />
 
+              {/* Total */}
               <div className="summary-total">
-                <span>Total</span>
+
+                <span>
+                  Total
+                </span>
 
                 <strong>
                   ${total.toFixed(2)}
                 </strong>
+
               </div>
 
+              {/* Promo */}
+              <div className="promo-wrapper">
+
+                <div className="promo-input-wrapper">
+
+                  <FiTag />
+
+                  <input
+                    type="text"
+                    placeholder="Add promo code"
+                    value={promoCode}
+                    onChange={(e) =>
+                      setPromoCode(e.target.value)
+                    }
+                  />
+
+                </div>
+
+                <button
+                  type="button"
+                  className="apply-btn"
+                  onClick={applyPromo}
+                >
+                  Apply
+                </button>
+
+              </div>
+
+              {/* Checkout */}
               <Link
                 to="/checkout"
                 className="checkout-btn"
               >
-                Proceed to Checkout
-              </Link>
+                <span>
+                  Go to Checkout
+                </span>
 
-              <Link
-                to="/shop"
-                className="continue-shopping-link"
-              >
-                Continue Shopping
+                <FiArrowRight />
               </Link>
 
             </aside>
@@ -306,7 +389,9 @@ const Cart = () => {
         )}
 
       </div>
-<Footer />
+
+      <Footer />
+
     </main>
   );
 };

@@ -14,6 +14,7 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -33,14 +34,18 @@ const ProductDetails = () => {
 
         setProduct(data);
 
-        // Default size/color
+        // Default size
         if (data.sizes?.length > 0) {
           setSelectedSize(data.sizes[0]);
         }
 
+        // Default color
         if (data.colors?.length > 0) {
           setSelectedColor(data.colors[0]);
         }
+
+        // Default image
+        setSelectedImage(data.image);
       } catch (error) {
         console.error("Product Detail Error:", error);
         setError("Product load nahi ho saka.");
@@ -60,235 +65,450 @@ const ProductDetails = () => {
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
   };
 
-  
+  const getDiscount = () => {
+    if (!product?.oldPrice || product.oldPrice <= product.price) {
+      return 0;
+    }
+
+    return Math.round(
+      ((product.oldPrice - product.price) / product.oldPrice) * 100
+    );
+  };
+
+  const discount = product?.discount || getDiscount();
+
   const addToCart = () => {
-  const existingCart =
-    JSON.parse(localStorage.getItem("cart")) || [];
+    const existingCart =
+      JSON.parse(localStorage.getItem("cart")) || [];
 
-  const existingProduct = existingCart.find(
-    (item) =>
-      item.id === product.id &&
-      item.selectedSize === selectedSize &&
-      item.selectedColor === selectedColor
-  );
+    const existingProduct = existingCart.find(
+      (item) =>
+        item.id === product.id &&
+        item.selectedSize === selectedSize &&
+        item.selectedColor === selectedColor
+    );
 
-  if (existingProduct) {
-    existingProduct.quantity += quantity;
-  } else {
-    existingCart.push({
-      ...product,
-      quantity,
-      selectedSize,
-      selectedColor,
-    });
-  }
+    if (existingProduct) {
+      existingProduct.quantity += quantity;
+    } else {
+      existingCart.push({
+        ...product,
+        quantity,
+        selectedSize,
+        selectedColor,
+      });
+    }
 
-  localStorage.setItem(
-    "cart",
-    JSON.stringify(existingCart)
-  );
+    localStorage.setItem(
+      "cart",
+      JSON.stringify(existingCart)
+    );
 
-  alert("Product added to cart!");
-};
+    // Navbar cart count update
+    window.dispatchEvent(new Event("cartUpdated"));
+
+    alert("Product added to cart!");
+  };
+
+  // Loading
   if (loading) {
     return (
-      <main className="product-detail-page">
-        <div className="product-detail-container">
-          <h2>Loading product...</h2>
-        </div>
-      </main>
+      <>
+        <Navbar />
+
+        <main className="product-detail-page">
+          <div className="product-loading">
+            <div className="loading-spinner"></div>
+            <h2>Loading product...</h2>
+          </div>
+        </main>
+
+        <Footer />
+      </>
     );
   }
 
+  // Error
   if (error || !product) {
     return (
-      <main className="product-detail-page">
-        <div className="product-detail-container">
-          <h2>{error || "Product not found"}</h2>
+      <>
+        <Navbar />
 
-          <Link to="/shop">
-            Back to Shop
-          </Link>
-        </div>
-      </main>
+        <main className="product-detail-page">
+          <div className="product-error">
+            <h2>{error || "Product not found"}</h2>
+
+            <Link to="/shop" className="back-shop-btn">
+              Back to Shop
+            </Link>
+          </div>
+        </main>
+
+        <Footer />
+      </>
     );
   }
 
   return (
-    <main className="product-detail-page">
-<Navbar />
-      <div className="product-detail-container">
+    <>
+      <Navbar />
 
-        {/* Breadcrumb */}
-        <div className="product-breadcrumb">
-          <Link to="/">Home</Link>
+      <main className="product-detail-page">
 
-          <span>›</span>
+        <div className="product-detail-container">
 
-          <Link to="/shop">Shop</Link>
+          {/* =========================
+              BREADCRUMB
+          ========================= */}
 
-          <span>›</span>
+          <div className="product-breadcrumb">
+            <Link to="/">Home</Link>
 
-          <strong>{product.name}</strong>
-        </div>
+            <span>›</span>
 
-        {/* Product */}
-        <div className="product-detail">
+            <Link to="/shop">Shop</Link>
 
-          {/* Image */}
-          <div className="product-image-section">
+            <span>›</span>
 
-            <div className="product-main-image">
-              <img
-                src={product.image}
-                alt={product.name}
-              />
-            </div>
+            <Link to="/shop">
+              {product.category || "Products"}
+            </Link>
 
+            <span>›</span>
+
+            <strong>{product.name}</strong>
           </div>
 
-          {/* Information */}
-          <div className="product-info">
 
-            <h1>{product.name}</h1>
+          {/* =========================
+              PRODUCT
+          ========================= */}
 
-            {/* Rating */}
-            <div className="product-rating">
+          <div className="product-detail">
 
-              <span className="stars">
-                {"★".repeat(
-                  Math.round(product.rating || 0)
+            {/* =========================
+                LEFT IMAGE AREA
+            ========================= */}
+
+            <div className="product-image-section">
+
+              <div className="product-gallery">
+
+                {/* Thumbnails */}
+
+                <div className="product-thumbnails">
+
+                  <button
+                    className="thumbnail active"
+                    onClick={() =>
+                      setSelectedImage(product.image)
+                    }
+                  >
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                    />
+                  </button>
+
+                  <button
+                    className="thumbnail"
+                    onClick={() =>
+                      setSelectedImage(product.image)
+                    }
+                  >
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                    />
+                  </button>
+
+                  <button
+                    className="thumbnail"
+                    onClick={() =>
+                      setSelectedImage(product.image)
+                    }
+                  >
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                    />
+                  </button>
+
+                </div>
+
+
+                {/* Main Image */}
+
+                <div className="product-main-image">
+
+                  {discount > 0 && (
+                    <span className="product-detail-discount">
+                      -{discount}%
+                    </span>
+                  )}
+
+                  <img
+                    src={selectedImage || product.image}
+                    alt={product.name}
+                  />
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            {/* =========================
+                PRODUCT INFO
+            ========================= */}
+
+            <div className="product-info">
+
+              <h1>{product.name}</h1>
+
+
+              {/* Rating */}
+
+              <div className="product-rating">
+
+                <span className="stars">
+                  {"★".repeat(
+                    Math.floor(product.rating || 0)
+                  )}
+
+                  {product.rating % 1 >= 0.5 && "★"}
+                </span>
+
+                <span className="rating-number">
+                  {product.rating || 0}/5
+                </span>
+
+              </div>
+
+
+              {/* Price */}
+
+              <div className="product-price">
+
+                <span className="current-price">
+                  ${product.price}
+                </span>
+
+                {product.oldPrice && (
+                  <span className="old-price">
+                    ${product.oldPrice}
+                  </span>
                 )}
-              </span>
 
-              <span>
-                {product.rating || 0}/5
-              </span>
+                {discount > 0 && (
+                  <span className="discount">
+                    -{discount}%
+                  </span>
+                )}
 
-            </div>
+              </div>
 
-            {/* Price */}
-            <div className="product-price">
 
-              <span className="current-price">
-                ${product.price}
-              </span>
+              {/* Description */}
 
-              {product.oldPrice && (
-                <span className="old-price">
-                  ${product.oldPrice}
-                </span>
+              <p className="product-description">
+                This graphic t-shirt is perfect for any
+                occasion. Crafted from a soft and breathable
+                fabric, it offers superior comfort and style.
+              </p>
+
+
+              <div className="product-divider"></div>
+
+
+              {/* =========================
+                  COLORS
+              ========================= */}
+
+              {product.colors?.length > 0 && (
+                <div className="product-option">
+
+                  <h3>Choose Color</h3>
+
+                  <div className="color-options">
+
+                    {product.colors.map((color) => (
+
+                      <button
+                        key={color}
+                        className={`color-btn ${
+                          selectedColor === color
+                            ? "active"
+                            : ""
+                        }`}
+                        onClick={() =>
+                          setSelectedColor(color)
+                        }
+                        title={color}
+                        aria-label={`Select ${color}`}
+                      >
+
+                        <span
+                          className="color-circle"
+                          style={{
+                            backgroundColor:
+                              color.toLowerCase() ===
+                              "white"
+                                ? "#ffffff"
+                                : color.toLowerCase() ===
+                                  "black"
+                                ? "#000000"
+                                : color.toLowerCase() ===
+                                  "blue"
+                                ? "#274c77"
+                                : color.toLowerCase() ===
+                                  "brown"
+                                ? "#8b5e3c"
+                                : color.toLowerCase() ===
+                                  "grey"
+                                ? "#808080"
+                                : color.toLowerCase(),
+                          }}
+                        ></span>
+
+                        {selectedColor === color && (
+                          <span className="color-check">
+                            ✓
+                          </span>
+                        )}
+
+                      </button>
+
+                    ))}
+
+                  </div>
+
+                </div>
               )}
 
-              {product.discount > 0 && (
-                <span className="discount">
-                  -{product.discount}%
-                </span>
+
+              {/* =========================
+                  SIZE
+              ========================= */}
+
+              {product.sizes?.length > 0 && (
+                <div className="product-option">
+
+                  <div className="size-heading">
+                    <h3>Choose Size</h3>
+                  </div>
+
+                  <div className="size-options">
+
+                    {product.sizes.map((size) => (
+
+                      <button
+                        key={size}
+                        className={`size-btn ${
+                          selectedSize === size
+                            ? "active"
+                            : ""
+                        }`}
+                        onClick={() =>
+                          setSelectedSize(size)
+                        }
+                      >
+                        {size}
+                      </button>
+
+                    ))}
+
+                  </div>
+
+                </div>
               )}
 
-            </div>
 
-            <p className="product-description">
-              Discover the latest style from our
-              collection. This product is designed
-              for comfort, quality and everyday wear.
-            </p>
+              {/* =========================
+                  QUANTITY + CART
+              ========================= */}
 
-            {/* Colors */}
-            {product.colors?.length > 0 && (
-              <div className="product-option">
+              <div className="product-actions">
 
-                <h3>Choose Color</h3>
+                <div className="quantity-box">
 
-                <div className="color-options">
+                  <button
+                    type="button"
+                    onClick={decreaseQuantity}
+                  >
+                    −
+                  </button>
 
-                  {product.colors.map((color) => (
-                    <button
-                      key={color}
-                      className={
-                        selectedColor === color
-                          ? "color-btn active"
-                          : "color-btn"
-                      }
-                      onClick={() =>
-                        setSelectedColor(color)
-                      }
-                    >
-                      {color}
-                    </button>
-                  ))}
+                  <span>{quantity}</span>
+
+                  <button
+                    type="button"
+                    onClick={increaseQuantity}
+                  >
+                    +
+                  </button>
 
                 </div>
 
-              </div>
-            )}
-
-            {/* Sizes */}
-            {product.sizes?.length > 0 && (
-              <div className="product-option">
-
-                <h3>Choose Size</h3>
-
-                <div className="size-options">
-
-                  {product.sizes.map((size) => (
-                    <button
-                      key={size}
-                      className={
-                        selectedSize === size
-                          ? "size-btn active"
-                          : "size-btn"
-                      }
-                      onClick={() =>
-                        setSelectedSize(size)
-                      }
-                    >
-                      {size}
-                    </button>
-                  ))}
-
-                </div>
-
-              </div>
-            )}
-
-            {/* Quantity + Cart */}
-            <div className="product-actions">
-
-              <div className="quantity-box">
 
                 <button
-                  onClick={decreaseQuantity}
+                  type="button"
+                  className="add-to-cart-btn"
+                  onClick={addToCart}
                 >
-                  −
-                </button>
-
-                <span>{quantity}</span>
-
-                <button
-                  onClick={increaseQuantity}
-                >
-                  +
+                  Add to Cart
                 </button>
 
               </div>
-
-              <button
-                className="add-to-cart-btn"
-                onClick={addToCart}
-              >
-                Add to Cart
-              </button>
 
             </div>
 
           </div>
 
+
+          {/* =========================
+              PRODUCT TABS
+          ========================= */}
+
+          <div className="product-tabs">
+
+            <button className="product-tab">
+              Product Details
+            </button>
+
+            <button className="product-tab active">
+              Rating & Reviews
+            </button>
+
+            <button className="product-tab">
+              FAQs
+            </button>
+
+          </div>
+
+
+          {/* Reviews heading */}
+
+          <div className="reviews-heading">
+
+            <h2>
+              All Reviews
+              <span>({product.rating || 0})</span>
+            </h2>
+
+            <button className="write-review-btn">
+              Write a Review
+            </button>
+
+          </div>
+
         </div>
 
-      </div>
-<Footer />
-    </main>
+      </main>
+
+      <Footer />
+    </>
   );
 };
 

@@ -331,50 +331,47 @@ function Home() {
 
       {/* ================= DRESS STYLE ================= */}
 
-      <section className="dress-style">
+<section className="dress-style">
 
-        <h2>
-          BROWSE BY DRESS STYLE
-        </h2>
+  <h2>BROWSE BY DRESS STYLE</h2>
 
-        <div className="style-grid">
-<div>
-          <img
-            src={casual}
-            alt="Casual"
-            className="style-card casual"
-          />
-            <span>Casual</span>
-            </div>
-          
-<div>
-         <img
-            src={formal}
-            alt="Formal"
-            className="style-card formal"
-          />
-            <span>Formal</span>
-            </div>
-          <div>
-          <img
-            src={party}
-            alt="Party"
-            className="style-card party"
-          />
-            <span>Party</span>
-          </div>
-        <div>
-          <img
-            src={gym}
-            alt="Gym"
-            className="style-card gym"
-          />
-            <span>Gym</span>
-          </div>
-        </div>
+  <div className="style-grid">
 
-      </section>
+    <div className="style-card casual">
+      <img
+        src={casual}
+        alt="Casual"
+      />
+      <span>Casual</span>
+    </div>
 
+    <div className="style-card formal">
+      <img
+        src={formal}
+        alt="Formal"
+      />
+      <span>Formal</span>
+    </div>
+
+    <div className="style-card party">
+      <img
+        src={party}
+        alt="Party"
+      />
+      <span>Party</span>
+    </div>
+
+    <div className="style-card gym">
+      <img
+        src={gym}
+        alt="Gym"
+      />
+      <span>Gym</span>
+    </div>
+
+  </div>
+
+</section>
       {/* ================= REVIEWS ================= */}
 
       <section className="reviews">
