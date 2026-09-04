@@ -14,22 +14,21 @@ const Checkout = () => {
     city: "",
   });
 
-  const [paymentMethod, setPaymentMethod] = useState(
-    "Cash on Delivery"
-  );
+  const [paymentMethod, setPaymentMethod] =
+    useState("Cash on Delivery");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Cart localStorage se lena
   const cart =
     JSON.parse(localStorage.getItem("cart")) || [];
 
-  // Total calculate
   const total = cart.reduce(
     (sum, item) =>
-      sum + Number(item.price) * Number(item.quantity),
+      sum +
+      Number(item.price) *
+        Number(item.quantity || 1),
     0
   );
 
@@ -46,7 +45,6 @@ const Checkout = () => {
     setError("");
     setSuccess("");
 
-    // Login check
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -54,18 +52,16 @@ const Checkout = () => {
       return;
     }
 
-    // Cart check
     if (cart.length === 0) {
       setError("Your cart is empty.");
       return;
     }
 
-    // Form validation
     if (
-      !formData.name ||
-      !formData.phone ||
-      !formData.address ||
-      !formData.city
+      !formData.name.trim() ||
+      !formData.phone.trim() ||
+      !formData.address.trim() ||
+      !formData.city.trim()
     ) {
       setError("Please fill all shipping details.");
       return;
@@ -74,11 +70,27 @@ const Checkout = () => {
     try {
       setLoading(true);
 
+      // Backend ke Order model ke according data
       const orderItems = cart.map((item) => ({
-        productId: item.id,
-        quantity: item.quantity,
-        size: item.selectedSize || item.size || null,
-        color: item.selectedColor || item.color || null,
+        productId: Number(item.id),
+
+        name: item.name,
+
+        price: Number(item.price),
+
+        quantity: Number(item.quantity || 1),
+
+        size:
+          item.selectedSize ||
+          item.size ||
+          null,
+
+        color:
+          item.selectedColor ||
+          item.color ||
+          null,
+
+        image: item.image,
       }));
 
       const response = await fetch(
@@ -94,8 +106,10 @@ const Checkout = () => {
           body: JSON.stringify({
             items: orderItems,
 
+            totalAmount: total,
+
             shippingAddress: {
-              name: formData.name,
+              fullName: formData.name,
               phone: formData.phone,
               address: formData.address,
               city: formData.city,
@@ -108,6 +122,8 @@ const Checkout = () => {
 
       const data = await response.json();
 
+      console.log("Order response:", data);
+
       if (!response.ok) {
         throw new Error(
           data.message || "Order failed"
@@ -117,18 +133,27 @@ const Checkout = () => {
       // Cart clear
       localStorage.removeItem("cart");
 
-      setSuccess(
-        `Order #${data.order.id} placed successfully!`
+      // Navbar cart count update
+      window.dispatchEvent(
+        new Event("cartUpdated")
       );
 
-      // Order complete hone ke baad home
+      setSuccess(
+        "Order placed successfully!"
+      );
+
       setTimeout(() => {
         navigate("/");
       }, 2000);
+
     } catch (error) {
-      console.error("Checkout Error:", error);
+      console.error(
+        "Checkout Error:",
+        error
+      );
 
       setError(error.message);
+
     } finally {
       setLoading(false);
     }
@@ -136,24 +161,31 @@ const Checkout = () => {
 
   return (
     <main className="checkout-page">
+
       <Navbar />
 
       <div className="checkout-container">
+
+        {/* HEADER */}
 
         <div className="checkout-header">
           <h1>CHECKOUT</h1>
 
           <p>
-            Complete your order by entering your
-            shipping details.
+            Complete your order by entering
+            your shipping details.
           </p>
         </div>
+
+        {/* ERROR */}
 
         {error && (
           <div className="checkout-error">
             {error}
           </div>
         )}
+
+        {/* SUCCESS */}
 
         {success && (
           <div className="checkout-success">
@@ -163,15 +195,26 @@ const Checkout = () => {
 
         <div className="checkout-content">
 
-          {/* Shipping Form */}
+          {/* =========================
+              SHIPPING FORM
+          ========================== */}
+
           <div className="checkout-form-section">
 
             <h2>Shipping Information</h2>
 
-            <form onSubmit={handlePlaceOrder}>
+            <form
+              className="checkout-form"
+              onSubmit={handlePlaceOrder}
+            >
+
+              {/* NAME */}
 
               <div className="form-group">
-                <label>Full Name</label>
+
+                <label>
+                  Full Name
+                </label>
 
                 <input
                   type="text"
@@ -180,10 +223,16 @@ const Checkout = () => {
                   value={formData.name}
                   onChange={handleChange}
                 />
+
               </div>
 
+              {/* PHONE */}
+
               <div className="form-group">
-                <label>Phone Number</label>
+
+                <label>
+                  Phone Number
+                </label>
 
                 <input
                   type="tel"
@@ -192,10 +241,16 @@ const Checkout = () => {
                   value={formData.phone}
                   onChange={handleChange}
                 />
+
               </div>
 
+              {/* ADDRESS */}
+
               <div className="form-group">
-                <label>Address</label>
+
+                <label>
+                  Address
+                </label>
 
                 <input
                   type="text"
@@ -204,10 +259,16 @@ const Checkout = () => {
                   value={formData.address}
                   onChange={handleChange}
                 />
+
               </div>
 
+              {/* CITY */}
+
               <div className="form-group">
-                <label>City</label>
+
+                <label>
+                  City
+                </label>
 
                 <input
                   type="text"
@@ -216,13 +277,26 @@ const Checkout = () => {
                   value={formData.city}
                   onChange={handleChange}
                 />
+
               </div>
 
-              <h2>Payment Method</h2>
+              {/* PAYMENT */}
 
-              <div className="payment-options">
+              <div className="payment-section">
 
-                <label className="payment-option">
+                <h2>
+                  Payment Method
+                </h2>
+
+                <label
+                  className={`payment-option ${
+                    paymentMethod ===
+                    "Cash on Delivery"
+                      ? "active"
+                      : ""
+                  }`}
+                >
+
                   <input
                     type="radio"
                     name="payment"
@@ -232,14 +306,34 @@ const Checkout = () => {
                       "Cash on Delivery"
                     }
                     onChange={(e) =>
-                      setPaymentMethod(e.target.value)
+                      setPaymentMethod(
+                        e.target.value
+                      )
                     }
                   />
 
-                  <span>Cash on Delivery</span>
+                  <span className="radio-circle"></span>
+
+                  <div>
+                    <strong>
+                      Cash on Delivery
+                    </strong>
+
+                    <small>
+                      Pay when your order arrives
+                    </small>
+                  </div>
+
                 </label>
 
-                <label className="payment-option">
+                <label
+                  className={`payment-option ${
+                    paymentMethod === "Card"
+                      ? "active"
+                      : ""
+                  }`}
+                >
+
                   <input
                     type="radio"
                     name="payment"
@@ -248,14 +342,29 @@ const Checkout = () => {
                       paymentMethod === "Card"
                     }
                     onChange={(e) =>
-                      setPaymentMethod(e.target.value)
+                      setPaymentMethod(
+                        e.target.value
+                      )
                     }
                   />
 
-                  <span>Card</span>
+                  <span className="radio-circle"></span>
+
+                  <div>
+                    <strong>
+                      Card
+                    </strong>
+
+                    <small>
+                      Pay securely with your card
+                    </small>
+                  </div>
+
                 </label>
 
               </div>
+
+              {/* PLACE ORDER */}
 
               <button
                 type="submit"
@@ -271,63 +380,153 @@ const Checkout = () => {
 
           </div>
 
-          {/* Order Summary */}
+          {/* =========================
+              ORDER SUMMARY
+          ========================== */}
+
           <div className="order-summary">
 
-            <h2>Order Summary</h2>
+            <h2>
+              Order Summary
+            </h2>
 
             {cart.length === 0 ? (
-              <p>Your cart is empty.</p>
+
+              <div className="summary-empty">
+
+                <p>
+                  Your cart is empty.
+                </p>
+
+                <button
+                  onClick={() => navigate("/shop")}
+                >
+                  Continue Shopping
+                </button>
+
+              </div>
+
             ) : (
+
               <>
-                {cart.map((item, index) => (
-                  <div
-                    className="summary-product"
-                    key={`${item.id}-${index}`}
-                  >
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                    />
 
-                    <div>
-                      <h3>{item.name}</h3>
+                <div className="summary-products">
 
-                      <p>
-                        Qty: {item.quantity}
-                      </p>
+                  {cart.map((item, index) => (
 
-                      {item.selectedSize && (
+                    <div
+                      className="summary-product"
+                      key={`${item.id}-${index}`}
+                    >
+
+                      {/* IMAGE */}
+
+                      <div className="summary-image">
+
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                        />
+
+                        <span>
+                          {item.quantity || 1}
+                        </span>
+
+                      </div>
+
+                      {/* PRODUCT INFO */}
+
+                      <div className="summary-product-info">
+
+                        <h3>
+                          {item.name}
+                        </h3>
+
                         <p>
-                          Size:{" "}
-                          {item.selectedSize}
+                          Qty:{" "}
+                          {item.quantity || 1}
                         </p>
-                      )}
 
-                      {item.selectedColor && (
-                        <p>
-                          Color:{" "}
-                          {item.selectedColor}
-                        </p>
-                      )}
+                        {(item.selectedSize ||
+                          item.size) && (
+                          <p>
+                            Size:{" "}
+                            {item.selectedSize ||
+                              item.size}
+                          </p>
+                        )}
+
+                        {(item.selectedColor ||
+                          item.color) && (
+                          <p>
+                            Color:{" "}
+                            {item.selectedColor ||
+                              item.color}
+                          </p>
+                        )}
+
+                      </div>
+
+                      {/* PRICE */}
+
+                      <strong>
+                        $
+                        {(
+                          Number(item.price) *
+                          Number(
+                            item.quantity || 1
+                          )
+                        ).toFixed(2)}
+                      </strong>
+
                     </div>
 
-                    <strong>
-                      $
-                      {Number(item.price) *
-                        Number(item.quantity)}
-                    </strong>
-                  </div>
-                ))}
+                  ))}
 
-                <div className="summary-total">
-                  <span>Total</span>
+                </div>
+
+                <div className="summary-divider"></div>
+
+                <div className="summary-row">
+
+                  <span>
+                    Subtotal
+                  </span>
 
                   <strong>
                     ${total.toFixed(2)}
                   </strong>
+
                 </div>
+
+                <div className="summary-row">
+
+                  <span>
+                    Shipping
+                  </span>
+
+                  <strong className="free">
+                    Free
+                  </strong>
+
+                </div>
+
+                <div className="summary-divider"></div>
+
+                <div className="summary-total">
+
+                  <span>
+                    Total
+                  </span>
+
+                  <strong>
+                    ${total.toFixed(2)}
+                  </strong>
+
+                </div>
+
               </>
+
             )}
 
           </div>
@@ -335,7 +534,9 @@ const Checkout = () => {
         </div>
 
       </div>
-<Footer />
+
+      <Footer />
+
     </main>
   );
 };
