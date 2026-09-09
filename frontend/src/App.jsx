@@ -1,12 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "./pages/Home";
-import Products from "./pages/Products";
+import Shop from "./pages/Shop";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Checkout from "./pages/Checkout";
+import Navbar from "./components/Navbar";
+import NewArrivals from "./pages/NewArrivals";
 
 function App() {
   return (
@@ -15,7 +17,9 @@ function App() {
 
         <Route path="/" element={<Home />} />
 
-        <Route path="/products" element={<Products />} />
+        <Route path="/Shop" element={<Shop />} />
+
+        <Route path="/navbar" element={<Navbar />} />
 
         <Route path="/product/:id" element={<ProductDetails />} />
 
@@ -26,6 +30,11 @@ function App() {
         <Route path="/signup" element={<Signup />} />
 
         <Route path="/checkout" element={<Checkout />} />
+
+        <Route
+  path="/new-arrivals"
+  element={<NewArrivals />}
+/>
 
       </Routes>
     </BrowserRouter>

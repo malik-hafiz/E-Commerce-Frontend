@@ -1,0 +1,254 @@
+/* =========================
+   ADMIN BUTTONS
+========================= */
+
+.admin-primary-btn,
+.admin-secondary-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-primary-btn {
+  background: #5b5ce2;
+  color: white;
+}
+
+.admin-primary-btn:hover {
+  opacity: 0.9;
+}
+
+.admin-secondary-btn {
+  background: #252a41;
+  color: #d9ddf5;
+}
+
+/* =========================
+   TABLE ACTIONS
+========================= */
+
+.table-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.action-btn.view {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+.action-btn.edit {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+}
+
+.action-btn.delete {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.admin-modal {
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #1b2035;
+  border: 1px solid #303750;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.admin-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.admin-modal-header h2 {
+  margin: 0;
+  color: #ffffff;
+}
+
+.admin-modal-header p {
+  margin: 5px 0 0;
+  color: #7f8aaa;
+  font-size: 13px;
+}
+
+.modal-close {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: #252a41;
+  color: #cbd2ee;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-group label {
+  color: #cbd2ee;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #303750;
+  background: #151a2d;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 11px 12px;
+  outline: none;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #5b5ce2;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+/* =========================
+   ORDER DETAILS
+========================= */
+
+.order-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.order-details strong {
+  color: #8e98bb;
+  font-size: 12px;
+}
+
+.order-details p {
+  color: #ffffff;
+  margin: 5px 0 0;
+  font-size: 14px;
+}
+
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border: 1px solid #303750;
+  border-radius: 9px;
+  background: #151a2d;
+}
+
+.order-item img {
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 7px;
+}
+
+.order-item div {
+  flex: 1;
+}
+
+.order-item strong {
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.order-item p {
+  margin: 3px 0 0;
+  color: #7f8aaa;
+  font-size: 12px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+  .form-grid,
+  .order-details {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-modal {
+    padding: 18px;
+  }
+
+  .page-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}

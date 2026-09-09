@@ -1,0 +1,690 @@
+.new-arrivals-page {
+  width: 100%;
+  background: #ffffff;
+  color: #000000;
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+.new-arrivals-page *,
+.new-arrivals-page *::before,
+.new-arrivals-page *::after {
+  box-sizing: border-box;
+}
+
+.new-arrivals-container {
+  width: min(1240px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+/* =====================================================
+   BREADCRUMB
+   ===================================================== */
+
+.new-arrivals-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 28px 0 22px;
+
+  font-size: 13px;
+
+  color: #777777;
+}
+
+.new-arrivals-breadcrumb a {
+  color: #777777;
+  text-decoration: none;
+}
+
+.new-arrivals-breadcrumb a:hover {
+  color: #000000;
+}
+
+.new-arrivals-breadcrumb span {
+  color: #999999;
+  font-size: 17px;
+}
+
+.new-arrivals-breadcrumb strong {
+  color: #000000;
+  font-weight: 500;
+}
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.new-arrivals-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  padding: 10px 0 35px;
+
+  border-bottom: 1px solid #eeeeee;
+}
+
+.new-arrivals-header h1 {
+  margin: 0 0 10px;
+
+  font-size: 40px;
+  line-height: 1;
+
+  font-weight: 800;
+
+  letter-spacing: -1.5px;
+}
+
+.new-arrivals-header p {
+  margin: 0;
+
+  color: #777777;
+
+  font-size: 14px;
+}
+
+.new-arrivals-count {
+  color: #777777;
+
+  font-size: 13px;
+}
+
+/* =====================================================
+   CONTENT
+   ===================================================== */
+
+.new-arrivals-content {
+  display: grid;
+
+  grid-template-columns: 240px minmax(0, 1fr);
+
+  gap: 35px;
+
+  padding: 30px 0 80px;
+}
+
+/* =====================================================
+   FILTER
+   ===================================================== */
+
+.new-arrivals-filter {
+  height: fit-content;
+
+  padding: 22px;
+
+  border: 1px solid #e5e5e5;
+
+  border-radius: 18px;
+
+  background: #ffffff;
+}
+
+.filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 18px;
+}
+
+.filter-header h3 {
+  margin: 0;
+
+  font-size: 20px;
+
+  font-weight: 700;
+}
+
+.clear-filter {
+  border: none;
+
+  background: transparent;
+
+  color: #777777;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  cursor: pointer;
+}
+
+.clear-filter:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+
+.filter-section {
+  padding: 18px 0;
+}
+
+.filter-section h4 {
+  margin: 0 0 15px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+.filter-divider {
+  height: 1px;
+
+  background: #eeeeee;
+}
+
+/* =====================================================
+   CHECKBOX
+   ===================================================== */
+
+.checkbox-label {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 13px;
+
+  color: #555555;
+
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+.checkbox-label input {
+  position: absolute;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.custom-checkbox {
+  width: 17px;
+  height: 17px;
+
+  flex-shrink: 0;
+
+  border: 1px solid #cccccc;
+
+  border-radius: 4px;
+
+  transition: 0.2s ease;
+}
+
+.checkbox-label input:checked
+  + .custom-checkbox {
+  background: #000000;
+
+  border-color: #000000;
+
+  position: relative;
+}
+
+.checkbox-label input:checked
+  + .custom-checkbox::after {
+  content: "✓";
+
+  position: absolute;
+
+  left: 3px;
+  top: -1px;
+
+  color: #ffffff;
+
+  font-size: 12px;
+}
+
+/* =====================================================
+   SIZE
+   ===================================================== */
+
+.size-buttons {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+}
+
+.size-buttons button {
+  min-width: 43px;
+  height: 34px;
+
+  padding: 0 10px;
+
+  border: 1px solid #dddddd;
+
+  border-radius: 7px;
+
+  background: #ffffff;
+
+  color: #555555;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.size-buttons button:hover {
+  border-color: #000000;
+}
+
+.size-buttons button.active {
+  background: #000000;
+
+  border-color: #000000;
+
+  color: #ffffff;
+}
+
+/* =====================================================
+   PRODUCTS AREA
+   ===================================================== */
+
+.new-arrivals-products {
+  min-width: 0;
+}
+
+/* =====================================================
+   TOP BAR
+   ===================================================== */
+
+.products-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 20px;
+
+  color: #777777;
+
+  font-size: 12px;
+}
+
+.products-topbar strong {
+  color: #000000;
+}
+
+.sort-wrapper {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.sort-wrapper label {
+  color: #777777;
+}
+
+.sort-wrapper select {
+  min-width: 145px;
+
+  height: 38px;
+
+  padding: 0 12px;
+
+  border: 1px solid #dddddd;
+
+  border-radius: 8px;
+
+  outline: none;
+
+  background: #ffffff;
+
+  color: #000000;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.sort-wrapper select:focus {
+  border-color: #000000;
+}
+
+/* =====================================================
+   PRODUCT GRID
+   ===================================================== */
+
+.new-products-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 28px 18px;
+}
+
+/* =====================================================
+   PRODUCT CARD OVERRIDE
+   Works with your ProductCard.jsx
+   ===================================================== */
+
+.new-products-grid .product-card {
+  width: 100%;
+
+  min-width: 0;
+}
+
+/* =====================================================
+   NO PRODUCTS
+   ===================================================== */
+
+.no-products {
+  min-height: 350px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  border: 1px dashed #dddddd;
+
+  border-radius: 16px;
+}
+
+.no-products-icon {
+  margin-bottom: 15px;
+
+  font-size: 38px;
+}
+
+.no-products h2 {
+  margin: 0 0 8px;
+
+  font-size: 22px;
+}
+
+.no-products p {
+  margin: 0 0 20px;
+
+  color: #777777;
+
+  font-size: 13px;
+}
+
+.no-products button {
+  height: 42px;
+
+  padding: 0 24px;
+
+  border: none;
+
+  border-radius: 999px;
+
+  background: #000000;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+/* =====================================================
+   LOADING
+   ===================================================== */
+
+.shop-loading {
+  min-height: 550px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 18px;
+}
+
+.shop-loading h2 {
+  margin: 0;
+
+  font-size: 20px;
+
+  font-weight: 600;
+}
+
+.loading-spinner {
+  width: 38px;
+  height: 38px;
+
+  border: 3px solid #eeeeee;
+
+  border-top-color: #000000;
+
+  border-radius: 50%;
+
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =====================================================
+   ERROR
+   ===================================================== */
+
+.shop-error {
+  min-height: 550px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.shop-error h2 {
+  margin: 0 0 20px;
+
+  font-size: 20px;
+}
+
+.shop-error button {
+  height: 44px;
+
+  padding: 0 28px;
+
+  border: none;
+
+  border-radius: 999px;
+
+  background: #000000;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media (max-width: 1000px) {
+
+  .new-arrivals-container {
+    width: min(
+      100% - 30px,
+      900px
+    );
+  }
+
+  .new-arrivals-content {
+    grid-template-columns: 200px minmax(0, 1fr);
+
+    gap: 25px;
+  }
+
+  .new-products-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 25px 15px;
+  }
+
+  .new-arrivals-header h1 {
+    font-size: 34px;
+  }
+
+}
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+  .new-arrivals-container {
+    width: calc(100% - 30px);
+  }
+
+  .new-arrivals-breadcrumb {
+    padding: 20px 0 18px;
+
+    font-size: 11px;
+  }
+
+  .new-arrivals-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    padding-bottom: 25px;
+  }
+
+  .new-arrivals-header h1 {
+    font-size: 29px;
+
+    letter-spacing: -1px;
+  }
+
+  .new-arrivals-header p {
+    font-size: 12px;
+
+    line-height: 1.5;
+  }
+
+  .new-arrivals-content {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+
+    padding-top: 20px;
+  }
+
+  .new-arrivals-filter {
+    width: 100%;
+
+    padding: 18px;
+
+    border-radius: 14px;
+  }
+
+  .filter-section {
+    padding: 14px 0;
+  }
+
+  .products-topbar {
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+  }
+
+  .sort-wrapper {
+    width: 100%;
+
+    justify-content: space-between;
+  }
+
+  .sort-wrapper select {
+    flex: 1;
+
+    max-width: 190px;
+  }
+
+  .new-products-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 25px 12px;
+  }
+
+}
+
+/* =====================================================
+   SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 420px) {
+
+  .new-arrivals-container {
+    width: calc(100% - 20px);
+  }
+
+  .new-arrivals-header h1 {
+    font-size: 26px;
+  }
+
+  .new-products-grid {
+    gap: 22px 10px;
+  }
+
+  .products-topbar {
+    font-size: 11px;
+  }
+
+  .sort-wrapper label {
+    font-size: 11px;
+  }
+
+  .sort-wrapper select {
+    min-width: 120px;
+
+    height: 35px;
+
+    font-size: 11px;
+  }
+
+  .new-arrivals-filter {
+    padding: 16px;
+  }
+
+}
