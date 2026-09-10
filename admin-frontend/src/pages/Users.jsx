@@ -7,7 +7,7 @@ import {
   FiPlus,
 } from "react-icons/fi";
 
-const API_URL = "http://localhost:3000";
+const API_URL = "https://e-commerce-backend-ycdx.vercel.app/";
 
 function Users() {
   const [users, setUsers] = useState([]);
