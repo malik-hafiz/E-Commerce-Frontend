@@ -11,6 +11,8 @@ const ProductCard = ({ product }) => {
   const addToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    
 
     const cart =
       JSON.parse(localStorage.getItem("cart")) || [];
@@ -113,13 +115,13 @@ const ProductCard = ({ product }) => {
 
         </div>
 
-        {/* Add to Cart */}
-        {/* <button
-          className="product-card-button"
+        
+        <button
+          className="product"
           onClick={addToCart}
         >
-          Add to Cart
-        </button> */}
+        
+        </button>
 
       </div>
 
