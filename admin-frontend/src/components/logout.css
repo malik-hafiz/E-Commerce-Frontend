@@ -7,6 +7,7 @@
   position: fixed;
   left: 20px;
   bottom: 20px;
+  z-index: 9999;
 
   width: 42px;
   height: 42px;
@@ -22,12 +23,11 @@
   color: #697586;
 
   font-size: 18px;
-
   cursor: pointer;
 
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 
-  transition: 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .logout-sidebar-btn:hover {
@@ -44,10 +44,12 @@
 .logout-top-btn {
   position: fixed;
   top: 18px;
-  right: 25px;
+  right: 250px;
+  z-index: 9999;
 
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
 
   padding: 9px 14px;
@@ -65,7 +67,7 @@
 
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
-  transition: 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .logout-top-btn svg {
