@@ -2,36 +2,44 @@ import { useEffect, useState } from "react";
 import {
   FiUsers,
   FiUserCheck,
-  FiShoppingCart,
+  FiShoppingBag,
   FiDollarSign,
+  FiClock,
 } from "react-icons/fi";
 
+const API_URL = "http://localhost:3000";
+
 function Dashboard() {
-  const [stats, setStats] = useState({
-    users: 0,
-    customers: 0,
-    orders: 0,
-    revenue: 0,
+  const [dashboard, setDashboard] = useState({
+    totalUsers: 0,
+    totalCustomers: 0,
+    totalOrders: 0,
+    totalRevenue: 0,
+    recentOrders: [],
   });
 
-  const [recentOrders, setRecentOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // =========================
+  // LOAD DASHBOARD
+  // =========================
+
   useEffect(() => {
-    const fetchDashboard = async () => {
+    let isMounted = true;
+
+    const loadDashboard = async () => {
       try {
         const token = localStorage.getItem("token");
 
         if (!token) {
-          setError("Please login as admin");
-          setLoading(false);
-          return;
+          throw new Error("Please login as admin");
         }
 
         const response = await fetch(
-          "http://localhost:3000/admin/dashboard",
+          `${API_URL}/admin/dashboard`,
           {
+            method: "GET",
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -46,168 +54,242 @@ function Dashboard() {
           );
         }
 
-        setStats({
-          users: data.users || 0,
-          customers: data.customers || 0,
-          orders: data.orders || 0,
-          revenue: data.revenue || 0,
-        });
+        if (isMounted) {
+          setDashboard({
+            totalUsers: data.totalUsers || 0,
+            totalCustomers: data.totalCustomers || 0,
+            totalOrders: data.totalOrders || 0,
+            totalRevenue: data.totalRevenue || 0,
+            recentOrders: data.recentOrders || [],
+          });
 
-        setRecentOrders(data.recentOrders || []);
+          setError("");
+        }
       } catch (err) {
         console.error("Dashboard error:", err);
-        setError(err.message);
+
+        if (isMounted) {
+          setError(
+            err.message || "Failed to load dashboard"
+          );
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
-    fetchDashboard();
+    loadDashboard();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
+  // =========================
+  // LOADING
+  // =========================
+
+  if (loading) {
+    return (
+      <div className="admin-page">
+        <div className="admin-card">
+          <p>Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      {/* Header */}
-      <div className="page-title">
-        <h1>Dashboard</h1>
-        <p>Welcome back, Admin</p>
+    <div className="admin-page">
+
+      {/* =========================
+          HEADER
+      ========================= */}
+
+      <div className="admin-page-header">
+        <div>
+          <h1>Dashboard</h1>
+          <p>Welcome back, Admin</p>
+        </div>
       </div>
 
-      {/* Statistics */}
-      <div className="stats-grid">
+      {/* =========================
+          ERROR
+      ========================= */}
 
-        <div className="stat-card purple">
-          <div className="stat-card-icon">
-            <FiUsers />
-          </div>
-
-          <h2>
-            {loading ? "..." : stats.users}
-          </h2>
-
-          <p>Total Users</p>
-        </div>
-
-        <div className="stat-card blue">
-          <div className="stat-card-icon">
-            <FiUserCheck />
-          </div>
-
-          <h2>
-            {loading ? "..." : stats.customers}
-          </h2>
-
-          <p>Total Customers</p>
-        </div>
-
-        <div className="stat-card cyan">
-          <div className="stat-card-icon">
-            <FiShoppingCart />
-          </div>
-
-          <h2>
-            {loading ? "..." : stats.orders}
-          </h2>
-
-          <p>Total Orders</p>
-        </div>
-
-        <div className="stat-card purple">
-          <div className="stat-card-icon">
-            <FiDollarSign />
-          </div>
-
-          <h2>
-            {loading
-              ? "..."
-              : `Rs. ${Number(stats.revenue).toLocaleString()}`
-            }
-          </h2>
-
-          <p>Total Revenue</p>
-        </div>
-
-      </div>
-
-      {/* Error */}
       {error && (
-        <div className="login-error" style={{ marginTop: "16px" }}>
+        <div className="admin-error">
           {error}
         </div>
       )}
 
-      {/* Recent Orders */}
-      <div
-        className="dashboard-card"
-        style={{ marginTop: "16px" }}
-      >
-        <div className="dashboard-card-header">
-          <h3>Recent Orders</h3>
-          <span>Latest 5 orders</span>
+      {/* =========================
+          STAT CARDS
+      ========================= */}
+
+      <div className="dashboard-grid">
+
+        {/* USERS */}
+
+        <div className="dashboard-card">
+          <div className="dashboard-card-icon">
+            <FiUsers />
+          </div>
+
+          <div className="dashboard-card-content">
+            <p>Total Users</p>
+            <h2>{dashboard.totalUsers}</h2>
+          </div>
         </div>
 
-        {loading ? (
-          <p style={{ color: "#7f8aaa" }}>
-            Loading orders...
-          </p>
-        ) : recentOrders.length === 0 ? (
-          <p style={{ color: "#7f8aaa" }}>
-            No orders found.
-          </p>
-        ) : (
-          <div className="admin-table-wrapper">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Customer</th>
-                  <th>Total</th>
-                  <th>Status</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
+        {/* CUSTOMERS */}
 
-              <tbody>
-                {recentOrders.map((order) => (
-                  <tr key={order._id}>
-
-                    <td>
-                      {order.userId?.name ||
-                        order.shippingAddress?.fullName ||
-                        "Unknown"}
-                    </td>
-
-                    <td>
-                      Rs.{" "}
-                      {Number(
-                        order.totalAmount
-                      ).toLocaleString()}
-                    </td>
-
-                    <td>
-                      <span
-                        className={`status ${String(
-                          order.status
-                        ).toLowerCase()}`}
-                      >
-                        {order.status}
-                      </span>
-                    </td>
-
-                    <td>
-                      {order.createdAt
-                        ? new Date(
-                            order.createdAt
-                          ).toLocaleDateString()
-                        : "-"}
-                    </td>
-
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="dashboard-card">
+          <div className="dashboard-card-icon">
+            <FiUserCheck />
           </div>
-        )}
+
+          <div className="dashboard-card-content">
+            <p>Total Customers</p>
+            <h2>{dashboard.totalCustomers}</h2>
+          </div>
+        </div>
+
+        {/* ORDERS */}
+
+        <div className="dashboard-card">
+          <div className="dashboard-card-icon">
+            <FiShoppingBag />
+          </div>
+
+          <div className="dashboard-card-content">
+            <p>Total Orders</p>
+            <h2>{dashboard.totalOrders}</h2>
+          </div>
+        </div>
+
+        {/* REVENUE */}
+
+        <div className="dashboard-card">
+          <div className="dashboard-card-icon">
+            <FiDollarSign />
+          </div>
+
+          <div className="dashboard-card-content">
+            <p>Total Revenue</p>
+            <h2>
+              Rs.{" "}
+              {Number(
+                dashboard.totalRevenue
+              ).toLocaleString()}
+            </h2>
+          </div>
+        </div>
+
       </div>
+
+      {/* =========================
+          RECENT ORDERS
+      ========================= */}
+
+      <div className="admin-card dashboard-orders">
+
+        <div className="admin-card-header">
+          <div>
+            <h2>Recent Orders</h2>
+            <p>Latest orders from your store</p>
+          </div>
+
+          <FiClock />
+        </div>
+
+        <div className="admin-table-wrapper">
+
+          <table className="admin-table">
+
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Email</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              {dashboard.recentOrders.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan="6"
+                    style={{
+                      textAlign: "center",
+                      padding: "30px",
+                    }}
+                  >
+                    No orders found
+                  </td>
+                </tr>
+              ) : (
+
+                dashboard.recentOrders.map(
+                  (order) => (
+                    <tr key={order._id}>
+
+                      <td>
+                        #{order._id.slice(-6).toUpperCase()}
+                      </td>
+
+                      <td>
+                        {order.userId?.name ||
+                          "Unknown"}
+                      </td>
+
+                      <td>
+                        {order.userId?.email ||
+                          "-"}
+                      </td>
+
+                      <td>
+                        Rs.{" "}
+                        {Number(
+                          order.totalAmount || 0
+                        ).toLocaleString()}
+                      </td>
+
+                      <td>
+                        <span className="status">
+                          {order.status ||
+                            "Pending"}
+                        </span>
+                      </td>
+
+                      <td>
+                        {order.createdAt
+                          ? new Date(
+                              order.createdAt
+                            ).toLocaleDateString()
+                          : "-"}
+                      </td>
+
+                    </tr>
+                  )
+                )
+
+              )}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
     </div>
   );
 }
