@@ -8,7 +8,7 @@ import {
   FiPlus,
 } from "react-icons/fi";
 
-const API_URL = "https://e-commerce-backend-ycdx.vercel.app/";
+const API_URL = "https://e-commerce-backend-ycdx.vercel.app";
 
 function Orders() {
   // =========================

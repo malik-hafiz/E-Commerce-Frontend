@@ -7,7 +7,7 @@ import {
   FiClock,
 } from "react-icons/fi";
 
-const API_URL = "https://e-commerce-backend-ycdx.vercel.app/";
+const API_URL = "https://e-commerce-backend-ycdx.vercel.app";
 
 function Dashboard() {
   const [dashboard, setDashboard] = useState({
